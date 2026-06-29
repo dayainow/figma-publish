@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,6 +16,12 @@ export default function RootLayout({
     <html lang="ko">
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
         {children}
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
