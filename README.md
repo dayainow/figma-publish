@@ -66,6 +66,18 @@ git clone https://github.com/dayainow/figma-publish.git /tmp/figma-publish
 
 상세: [docs/MCP_SETUP.md](./docs/MCP_SETUP.md)
 
+### 예제로 연습하기 (추천)
+
+```bash
+git clone https://github.com/dayainow/figma-publish.git
+cd figma-publish/examples/demo-app
+chmod +x setup.sh && ./setup.sh
+npm run dev   # http://localhost:3456
+```
+
+→ `examples/demo-app/prompts/TRY-ME.md` 프롬프트를 Cursor 채팅에 붙여넣기.  
+가이드: [examples/README.md](./examples/README.md)
+
 ### 3-A. Figma → Code (퍼블)
 
 `cursor/prompts/figma-publish.md`:
@@ -95,6 +107,12 @@ Figma: <URL>
 figma-publish/
 ├── README.md
 ├── install.sh
+├── examples/
+│   ├── README.md
+│   └── demo-app/                    # 연습용 Next.js 앱 (port 3456)
+│       ├── setup.sh
+│       ├── prompts/TRY-ME.md
+│       └── src/...
 ├── mcp.project.json.example
 ├── docs/
 │   ├── WORKFLOW.md              # Design → Code
