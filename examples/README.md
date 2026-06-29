@@ -52,4 +52,4 @@ examples/demo-app/
 2. Settings → Tools & MCP → **figma → Connect**
 3. (선택) `FIGMA_API_KEY` — Context MCP용
 
-[docs/MCP_SETUP.md](../docs/MCP_SETUP.md)
+[docs/MCP_SETUP.md](../docs/MCP_SETUP.md) · [docs/HARNESS_GUIDE.md](../docs/HARNESS_GUIDE.md)

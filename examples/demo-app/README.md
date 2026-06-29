@@ -65,6 +65,7 @@ npm run dev
 
 ## 관련 문서
 
+- [HARNESS_GUIDE.md](../../docs/HARNESS_GUIDE.md) — 하네스 종합 · 양방향 루프
 - [TRY-ME.md](./prompts/TRY-ME.md) — 붙여넣기 프롬프트
 - [CODE_TO_FIGMA.md](../../docs/CODE_TO_FIGMA.md)
 - [WORKFLOW.md](../../docs/WORKFLOW.md)

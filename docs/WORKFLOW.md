@@ -2,6 +2,8 @@
 
 Figma 디자인을 Next.js + Tailwind 코드로 옮길 때 AI 에이전트가 따라야 하는 **표준 파이프라인**입니다.
 
+**하네스 전체 개요 · 양방향 루프**: [HARNESS_GUIDE.md](./HARNESS_GUIDE.md) · 역방향(Code → Figma): [CODE_TO_FIGMA.md](./CODE_TO_FIGMA.md)
+
 ---
 
 ## 전체 흐름

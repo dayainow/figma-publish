@@ -2,7 +2,7 @@
 
 퍼블 완료된 **Next.js + Tailwind** 화면을 Figma 디자인 파일로 되돌리는 **역방향(code-to-design)** 파이프라인입니다.
 
-Design → Code는 [WORKFLOW.md](./WORKFLOW.md), 이 문서는 **Code → Design**을 다룹니다.
+**하네스 전체 개요 · 양방향 루프**: [HARNESS_GUIDE.md](./HARNESS_GUIDE.md) · 정방향(Design → Code): [WORKFLOW.md](./WORKFLOW.md)
 
 ---
 

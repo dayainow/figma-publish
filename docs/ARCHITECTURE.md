@@ -2,6 +2,8 @@
 
 Figma Publish Harness는 Cursor **Skill · Rule · Prompt** 3계층으로 **Design ↔ Code** 양방향 워크플로우를 고정합니다.
 
+**종합 가이드(하네스 개요·양방향 루프·연습 순서)**: [HARNESS_GUIDE.md](./HARNESS_GUIDE.md)
+
 ---
 
 ## 양방향 구조
