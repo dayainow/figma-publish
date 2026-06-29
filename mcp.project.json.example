@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "headers": {}
+    },
+    "figma-desktop": {
+      "url": "http://127.0.0.1:3845/mcp",
+      "headers": {}
+    },
+    "figmaContextMcp": {
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp", "--stdio"],
+      "env": {
+        "FIGMA_API_KEY": "${env:FIGMA_API_KEY}"
+      }
+    }
+  }
+}

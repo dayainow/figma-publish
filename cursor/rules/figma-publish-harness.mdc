@@ -1,0 +1,30 @@
+---
+description: Figma MCP 퍼블리싱 하네스 — figma/피그마/퍼블/node-id 작업 시 적용
+globs: src/**/*.tsx
+alwaysApply: false
+---
+
+# Figma 퍼블리싱 하네스
+
+Figma 링크·node-id·퍼블 요청 시 `.cursor/skills/figma-dev/SKILL.md`와 [figma-publish](https://github.com/dayainow/figma-publish) README·WORKFLOW를 따른다.
+
+## MCP 사용 순서
+
+1. `get_variable_defs` — 색·타이포·spacing 토큰
+2. `get_metadata` — 루트부터 children **전 깊이 재귀** node-id 수집
+3. `get_design_context` — 수집 범위로 **1회** (섹션 단위 재호출은 불일치 구간만)
+
+Remote MCP(`figma`)와 Desktop MCP(`figma-desktop`) 중 **연결된 서버**를 쓴다.
+
+## 코드 규칙
+
+- 스택: Next.js App Router + React + Tailwind. 기존 공통 컴포넌트 우선.
+- Figma 추출 코드를 그대로 붙이지 말고 프로젝트 패턴으로 리팩터.
+- **동일 텍스트 스타일은 부모 `className` 한 번** — 자식마다 `text-xl text-text-secondary` 반복 금지.
+- 반응형: 명시 없으면 데스크톱 프레임 1개 + breakpoint (`md:`, `lg:`).
+- 이미지: `public/images/<도메인>/` + `src/constants/figma-assets.ts`.
+
+## 완료 전 필수
+
+- 토큰 매핑·컴포넌트 분리·접근성·상태(hover/disabled) 확인
+- 프로젝트 개발 표준 Rule 위배 여부 점검
