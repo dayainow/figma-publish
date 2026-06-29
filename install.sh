@@ -34,12 +34,16 @@ echo "프로젝트 루트: $ROOT"
 echo "하네스: $HARNESS_DIR"
 
 mkdir -p "$ROOT/.cursor/skills/figma-dev"
+mkdir -p "$ROOT/.cursor/skills/figma-sync"
 mkdir -p "$ROOT/.cursor/rules"
 mkdir -p "$ROOT/.cursor/prompts"
 
 cp "$HARNESS_DIR/cursor/skills/figma-dev/SKILL.md" "$ROOT/.cursor/skills/figma-dev/SKILL.md"
+cp "$HARNESS_DIR/cursor/skills/figma-sync/SKILL.md" "$ROOT/.cursor/skills/figma-sync/SKILL.md"
 cp "$HARNESS_DIR/cursor/rules/figma-publish-harness.mdc" "$ROOT/.cursor/rules/figma-publish-harness.mdc"
+cp "$HARNESS_DIR/cursor/rules/figma-sync-harness.mdc" "$ROOT/.cursor/rules/figma-sync-harness.mdc"
 cp "$HARNESS_DIR/cursor/prompts/figma-publish.md" "$ROOT/.cursor/prompts/figma-publish.md"
+cp "$HARNESS_DIR/cursor/prompts/figma-sync-to-design.md" "$ROOT/.cursor/prompts/figma-sync-to-design.md"
 
 if [[ ! -f "$ROOT/.cursor/mcp.json" ]]; then
   cp "$HARNESS_DIR/mcp.project.json.example" "$ROOT/.cursor/mcp.json"

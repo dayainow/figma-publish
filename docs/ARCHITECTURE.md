@@ -1,44 +1,54 @@
-# 아키텍처 — 3계층 AI 가이드 구조
+# 아키텍처 — 양방향 3계층 AI 가이드
 
-Figma Publish Harness는 Cursor의 **Skill · Rule · Prompt** 3계층으로 AI 에이전트 행동을 고정합니다.
+Figma Publish Harness는 Cursor **Skill · Rule · Prompt** 3계층으로 **Design ↔ Code** 양방향 워크플로우를 고정합니다.
+
+---
+
+## 양방향 구조
 
 ```text
-┌─────────────────────────────────────────────────────────┐
-│  Prompt (즉시 사용 템플릿)                                │
-│  cursor/prompts/figma-publish.md                        │
-│  → 채팅에 붙여넣기, 섹션 퍼블·검증 요청                    │
-├─────────────────────────────────────────────────────────┤
-│  Rule (파일 패턴 자동 적용)                               │
-│  cursor/rules/figma-publish-harness.mdc                   │
-│  → src/**/*.tsx 작업 시 MCP 순서·코드 컨벤션 강제          │
-├─────────────────────────────────────────────────────────┤
-│  Skill (전문 지식·워크플로우)                             │
-│  cursor/skills/figma-dev/SKILL.md                         │
-│  → node-id 재귀, 토큰 절약, 에셋 경로, 체크리스트           │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                         Cursor Agent                              │
+├─────────────────────────────┬────────────────────────────────────┤
+│   Design → Code (퍼블)       │   Code → Design (동기화)            │
+├─────────────────────────────┼────────────────────────────────────┤
+│ Prompt: figma-publish.md    │ Prompt: figma-sync-to-design.md    │
+│ Rule:  figma-publish-harness│ Rule:  figma-sync-harness          │
+│ Skill: figma-dev            │ Skill: figma-sync                  │
+├─────────────────────────────┼────────────────────────────────────┤
+│ get_variable_defs           │ generate_figma_design                │
+│ get_metadata                │ use_figma                            │
+│ get_design_context          │ search_design_system               │
+└─────────────────────────────┴────────────────────────────────────┘
+                              │
+                              ▼
+                    Figma Design File
+                              │
+                              ▼
+                    Next.js + Tailwind
 ```
 
 ---
 
-## 각 계층의 역할
+## Design → Code (figma-dev)
 
-### Layer 1: Skill — "어떻게 Figma 퍼블을 하는가"
+| 계층 | 파일 | 역할 |
+| --- | --- | --- |
+| **Skill** | `cursor/skills/figma-dev/SKILL.md` | node-id 재귀, 토큰 절약, 에셋 경로 |
+| **Rule** | `cursor/rules/figma-publish-harness.mdc` | `src/**/*.tsx` MCP 순서·코드 컨벤션 |
+| **Prompt** | `cursor/prompts/figma-publish.md` | 섹션 퍼블·검증 템플릿 |
 
-- **트리거**: "피그마", "figma", "퍼블", "node-id", "get_design_context" 등
-- **내용**: node-id 재귀 3단계, MCP 도구별 사용 기준, 토큰 절약 원칙, 에셋 저장 규칙
-- **특징**: 에이전트가 Figma 관련 작업을 **인식하면 자동 참조**
+---
 
-### Layer 2: Rule — "TSX 파일 작업 시 무엇을 지켜야 하는가"
+## Code → Figma (figma-sync)
 
-- **적용 범위**: `src/**/*.tsx` (globs)
-- **내용**: MCP 호출 순서, Next.js + Tailwind 컨벤션, 공통 컴포넌트 우선, className 중복 금지
-- **특징**: 파일 패턴 매칭으로 **작업 중 자동 적용**
+| 계층 | 파일 | 역할 |
+| --- | --- | --- |
+| **Skill** | `cursor/skills/figma-sync/SKILL.md` | 병렬 캡처, DS 수집 순서, use_figma 원칙 |
+| **Rule** | `cursor/rules/figma-sync-harness.mdc` | 쓰기 MCP 순서, 금지 패턴 |
+| **Prompt** | `cursor/prompts/figma-sync-to-design.md` | 페이지/섹션/sync 템플릿 |
 
-### Layer 3: Prompt — "지금 이 섹션을 퍼블해줘"
-
-- **용도**: 채팅에 붙여넣는 즉시 사용 템플릿
-- **내용**: Figma URL, 섹션명, MCP 3단계, 후처리 요구사항
-- **특징**: 매번 같은 프롬프트 구조로 **일관된 요청**
+Cursor Figma 플러그인 내장 **`figma-use`**, **`figma-generate-design`** 스킬과 함께 쓰면 Plugin API 실수를 줄일 수 있습니다.
 
 ---
 
@@ -54,15 +64,15 @@ Figma Publish Harness는 Cursor의 **Skill · Rule · Prompt** 3계층으로 AI 
          ▼                   ▼                   ▼
 ┌────────────────┐ ┌────────────────┐ ┌────────────────────┐
 │ Figma Remote   │ │ Figma Desktop  │ │ Figma Context MCP  │
-│ MCP (OAuth)    │ │ MCP (로컬)      │ │ (REST API + PAT)   │
+│ (읽기+쓰기)     │ │ (읽기+쓰기)     │ │ (읽기·에셋)         │
 └───────┬────────┘ └───────┬────────┘ └─────────┬──────────┘
         │                  │                    │
         └──────────────────┼────────────────────┘
                            ▼
                   ┌─────────────────┐
-                  │  Figma Design   │
-                  │  File + Tokens  │
-                  └────────┬────────┘
+         ◄────────│  Figma Design   │────────►
+    get_design_   │  File + DS      │  use_figma +
+    context       └────────┬────────┘  generate_figma_design
                            │
                            ▼
                   ┌─────────────────┐
@@ -82,27 +92,25 @@ figma-publish/ (이 저장소)
     ▼
 target-project/.cursor/
     ├── skills/figma-dev/SKILL.md
+    ├── skills/figma-sync/SKILL.md
     ├── rules/figma-publish-harness.mdc
+    ├── rules/figma-sync-harness.mdc
     ├── prompts/figma-publish.md
+    ├── prompts/figma-sync-to-design.md
     └── mcp.json (없을 때만 생성)
 ```
-
-- 하네스 소스는 **별도 저장소** 또는 monorepo의 `harness/figma-publish/`에 유지
-- 대상 프로젝트에는 `install.sh`로 `.cursor/`만 복사
-- `.cursor/mcp.json`은 gitignore → 팀원 로컬 셋업
 
 ---
 
 ## 품질 게이트
 
-AI 출력 후 사람·린터가 검증하는 체크포인트:
+### Design → Code
 
-1. **토큰 매핑** — `get_variable_defs` 반영, 임의 hex/px 최소화
-2. **컴포넌트 분리** — button, card, input 등 공통 컴포넌트 재사용
-3. **스타일 중복 제거** — 부모 className 한 번
-4. **접근성** — hover, focus-visible, disabled
-5. **에셋 영속성** — 로컬 저장 + 상수 등록 (7일 URL 만료 대비)
-6. **린트** — `yarn lint` 통과
+1. 토큰 매핑 · 2. 컴포넌트 분리 · 3. className 중복 제거 · 4. 접근성 · 5. 에셋 로컬 저장 · 6. lint
+
+### Code → Figma
+
+1. DS INSTANCE 사용 · 2. 변수·스타일 바인딩 · 3. 제품 폰트 · 4. imageHash 이전 · 5. 캡처 레이어 삭제 · 6. auto-layout
 
 ---
 
@@ -110,7 +118,7 @@ AI 출력 후 사람·린터가 검증하는 체크포인트:
 
 | 확장 | 방법 |
 | --- | --- |
-| 다른 프레임워크 (Vue, Svelte) | Rule의 globs·스택 설명 수정 |
-| 디자인 시스템 연동 | Code Connect + `get_code_connect_map` |
-| CI 품질 게이트 | lint + a11y 테스트를 PR 체크에 추가 |
-| 팀 온보딩 | `install.sh` + [MCP_SETUP.md](./MCP_SETUP.md) 문서 공유 |
+| SwiftUI ↔ Figma | Cursor `figma-swiftui` 스킬 |
+| Code Connect | `get_code_connect_map` + `*.figma.tsx` |
+| CI 품질 게이트 | lint + visual regression |
+| 팀 온보딩 | `install.sh` + [MCP_SETUP.md](./MCP_SETUP.md) |

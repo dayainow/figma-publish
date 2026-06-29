@@ -84,6 +84,8 @@ Figma URL에서 fileKey와 nodeId를 추출할 때:
 
 Remote MCP(`figma`)와 Desktop MCP(`figma-desktop`) 중 **연결된 서버**를 사용합니다.
 
+### 읽기 — Design → Code
+
 | 작업 | 권장 도구 | MCP |
 | --- | --- | --- |
 | 디자인 토큰 조회 | `get_variable_defs` | Remote / Desktop |
@@ -92,6 +94,18 @@ Remote MCP(`figma`)와 Desktop MCP(`figma-desktop`) 중 **연결된 서버**를 
 | 스크린샷만 필요 | `get_screenshot` | Remote / Desktop |
 | Code Connect 매핑 | `get_code_connect_map` | Remote |
 | REST API 기반 에셋 | Figma Context MCP | Context |
+
+### 쓰기 — Code → Figma
+
+| 작업 | 권장 도구 | MCP |
+| --- | --- | --- |
+| 웹 페이지 픽셀 캡처 | `generate_figma_design` | Remote (figma 플러그인) |
+| DS 컴포넌트 조립·수정 | `use_figma` | Remote / Desktop |
+| 컴포넌트·변수 검색 | `search_design_system` | Remote |
+| 라이브러리 목록 | `get_libraries` | Remote |
+| 새 Figma 파일 | `create_new_file` | Remote |
+
+> Code → Figma 상세: [CODE_TO_FIGMA.md](./CODE_TO_FIGMA.md)
 
 ---
 

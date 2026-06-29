@@ -1,0 +1,27 @@
+---
+description: Code → Figma 동기화 — Figma로 옮겨/동기화/use_figma/generate_figma_design 작업 시 적용
+globs: 
+alwaysApply: false
+---
+
+# Figma Sync Harness (Code → Design)
+
+코드를 Figma로 옮기거나 디자인-코드 sync 요청 시 `.cursor/skills/figma-sync/SKILL.md`와 [CODE_TO_FIGMA.md](https://github.com/dayainow/figma-publish/blob/main/docs/CODE_TO_FIGMA.md)를 따른다.
+
+## MCP 사용 순서 (쓰기)
+
+1. `create_new_file` — fileKey 없을 때만
+2. **웹앱 + 이미지**: `generate_figma_design` + `use_figma` **병렬**
+3. **DS 수집**: Code Connect → 기존 화면 INSTANCE → `search_design_system` (마지막)
+4. **업데이트만**: `use_figma`만 (재캡처 최소화)
+5. **검증**: `get_metadata` / `get_screenshot` (읽기)
+
+## 금지
+
+- `search_design_system`을 Code Connect·기존 화면 확인 전에 호출
+- 이미지 있는 웹앱에서 `use_figma`만 단독 사용 (imageHash 없음)
+- 거대한 `use_figma` 스크립트 한 방 — 단계별 호출
+
+## 완료 전 필수
+
+- DS INSTANCE·변수 사용, 캡처 레퍼런스 삭제, 제품 폰트 확인
